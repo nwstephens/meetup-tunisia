@@ -1,0 +1,33 @@
+---
+title: "Download Data from SSA"
+output: html_document
+---
+
+# Setup
+
+```{r}
+library(vroom)
+```
+
+# Download
+
+```{r}
+download.file("https://www.ssa.gov/oact/babynames/state/namesbystate.zip", "namesbystate.zip")
+unzip("namesbystate.zip", exdir = "namesbystate")
+```
+
+# Read
+
+```{r}
+files <- dir("namesbystate", pattern = "*.TXT", full.names = TRUE)
+dat <- vroom(files, col_names=c("state", "sex", "year", "name", "n"))
+head(dat)
+```
+
+# Write
+
+```{r}
+vroom_write(dat, "namesbystate.csv", delim = ",")
+```
+
+
